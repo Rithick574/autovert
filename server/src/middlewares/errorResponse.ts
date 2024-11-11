@@ -1,4 +1,4 @@
-export class ErrorResponse extends Error {
+export default class ErrorResponse extends Error {
   public status: number;
   public message: string;
 

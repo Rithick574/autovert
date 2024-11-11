@@ -1,16 +1,17 @@
-import server from "@/__boot/server.config";
-import app from "@/server";
-import database from "./__boot/database";
-
-(async () => {
-  try {
-    await server(app);
-    await database();
-
-    process.on("SIGTERM", async () => {
-      console.info("SIGTERM received");
+import("tsconfig-paths")
+  .then(({ register }) => {
+    register({
+      baseUrl: __dirname,
+      paths: { "@/*": ["*"] },
+      addMatchAll: false,
     });
-  } catch (error: any) {
-    console.log(`Oops!`, error?.message);
-  }
-})();
+  })
+  .then(() => import("@/__boot"))
+  .then(({ main }) => main())
+  .catch((err) => {
+    console.error(err);
+
+    if (process.env.NODE_ENV === "production") {
+      process.kill(process.pid, "SIGTERM");
+    }
+  });

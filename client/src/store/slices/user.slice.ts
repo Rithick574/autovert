@@ -63,6 +63,21 @@ const userSlice = createSlice({
         state.error = payload;
       })
 
+      //google login
+      .addCase(registerGoogle.pending,(state)=>{
+        state.loading = true;
+      })
+      .addCase(registerGoogle.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.user = payload;
+      })
+      .addCase(registerGoogle.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.user = null;
+        state.error = payload;
+      })
+
       // getUserData
       .addCase(getUserData.pending, (state) => {
         state.loading = true;

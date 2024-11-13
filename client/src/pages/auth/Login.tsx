@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import LoginBG from "../../assets/animation/loginBg.json";
+import ReCAPTCHA from "react-google-recaptcha";
 // import { LoaderPinwheel  } from "lucide-react";
 
 const Login: React.FC = () => {
@@ -16,10 +17,15 @@ const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
+  const handleCaptchaChange = (value: string | null) => {
+    formik.setFieldValue("captcha", value);
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
+      captcha: "",
     },
     validationSchema: AdminvalidationSchema,
     onSubmit: async (values) => {
@@ -96,6 +102,19 @@ const Login: React.FC = () => {
                     </div>
                   )}
 
+                  <div className="flex justify-center mt-2">
+                    <ReCAPTCHA
+                      sitekey="6LcAYH0qAAAAABmj6Yg_umsmD1kbbF_9DGpXrhGC"
+                      onChange={handleCaptchaChange}
+                      theme="light"
+                    />
+                  </div>
+                  {formik.touched.captcha && formik.errors.captcha && (
+                    <div className="text-red-500 text-sm flex justify-start">
+                      {formik.errors.captcha}
+                    </div>
+                  )}
+
                   <button
                     type="submit"
                     className="bg-syncworks-blue text-white font-semibold p-2 rounded-lg hover:opacity-95 disabled:opacity-80 mt-6"
@@ -104,7 +123,10 @@ const Login: React.FC = () => {
                     {loading ? (
                       <span className="flex justify-center items-center gap-2">
                         Processing{" "}
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxvYWRlci1waW53aGVlbCI+PHBhdGggZD0iTTIyIDEyYTEgMSAwIDAgMS0xMCAwIDEgMSAwIDAgMC0xMCAwIi8+PHBhdGggZD0iTTcgMjAuN2ExIDEgMCAxIDEgNS04LjcgMSAxIDAgMSAwIDUtOC42Ii8+PHBhdGggZD0iTTcgMy4zYTEgMSAwIDEgMSA1IDguNiAxIDEgMCAxIDAgNSA4LjYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjwvc3ZnPg==" className="w-5 animate-spin" />
+                        <img
+                          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxvYWRlci1waW53aGVlbCI+PHBhdGggZD0iTTIyIDEyYTEgMSAwIDAgMS0xMCAwIDEgMSAwIDAgMC0xMCAwIi8+PHBhdGggZD0iTTcgMjAuN2ExIDEgMCAxIDEgNS04LjcgMSAxIDAgMSAwIDUtOC42Ii8+PHBhdGggZD0iTTcgMy4zYTEgMSAwIDEgMSA1IDguNiAxIDEgMCAxIDAgNSA4LjYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjwvc3ZnPg=="
+                          className="w-5 animate-spin"
+                        />
                         {/* <LoaderPinwheel className="w-5 animate-spin" /> */}
                       </span>
                     ) : (

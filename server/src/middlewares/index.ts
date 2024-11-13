@@ -1,3 +1,5 @@
 export * from "./errorHandler"
 export * from "./errorResponse"
 export * from "./notFound"
+export * from "./validation.middleware"
+export * from "./auth.middleware"

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { config, handleError } from "../../common/configurations";
 import { URL } from "../../common/api";
-import { IAdminLogin, IGoogleAuth } from "../../types/IAuth";
+import { ILogin, IGoogleAuth } from "../../types/IAuth";
 
 interface UserCredentials {
   email: string;
@@ -68,11 +68,8 @@ export const registerGoogle = createAsyncThunk(
   "user/googleOAuth",
   async (userCredentials: IGoogleAuth, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        "/auth/google",
-        userCredentials,
-        config
-      );
+      const { data } = await axios.post(`${URL}/auth`,userCredentials, config)
+        
       console.log('google auth data',data.data);
       return data.data;
     } catch (error: any) {
@@ -81,15 +78,13 @@ export const registerGoogle = createAsyncThunk(
   }
 );
 
-export const adminLogin=createAsyncThunk(
+export const LoginAction=createAsyncThunk(
   "admin/login",
-  async(credendials:IAdminLogin,{rejectWithValue})=>{
+  async(credendials:ILogin,{rejectWithValue})=>{
+    console.log(credendials,"credential in teh adminLogin");
+    
     try {
-      const { data } = await axios.post(
-        "/auth/admin-login",
-        credendials,
-        config
-      );
+      const { data } = await axios.post(`${URL}/auth/login`,credendials, config);
       return data.data;
     } catch (error:any) {
       return handleError(error, rejectWithValue);

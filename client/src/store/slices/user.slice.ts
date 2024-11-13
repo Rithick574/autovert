@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUserData, logout,register,registerGoogle,adminLogin } from "../actions/user.actions";
+import { getUserData, logout,register,registerGoogle,LoginAction } from "../actions/user.actions";
 
 const initialState = {
   loading: false as boolean,
@@ -17,7 +17,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
+    
       //logout states
       .addCase(logout.pending, (state) => {
         state.loading = true;
@@ -49,15 +49,15 @@ const userSlice = createSlice({
       })
 
       //adminlogin
-      .addCase(adminLogin.pending,(state)=>{
+      .addCase(LoginAction.pending,(state)=>{
         state.loading = true
       })
-      .addCase(adminLogin.fulfilled, (state, { payload }) => {
+      .addCase(LoginAction.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
         state.user = payload;
       })
-      .addCase(adminLogin.rejected, (state, { payload }) => {
+      .addCase(LoginAction.rejected, (state, { payload }) => {
         state.loading = false;
         state.user = null;
         state.error = payload;

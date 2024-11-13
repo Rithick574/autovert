@@ -3,13 +3,13 @@ import Header from "../../components/navbars/AuthHeader";
 import { AppDispatch, RootState } from "../../store";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { adminLogin } from "../../store/actions/user.actions";
+import { LoginAction } from "../../store/actions/user.actions";
 import { AdminvalidationSchema } from "../../validation/Auth";
 import { useFormik } from "formik";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import LoginBG from "../../assets/animation/loginBg.json";
-import {useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useEffect } from "react";
 // import { LoaderPinwheel  } from "lucide-react";
 
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
         return;
       }
       try {
-        const resultAction = await dispatch(adminLogin(values)).unwrap();
+        const resultAction = await dispatch(LoginAction(values)).unwrap();
         if (resultAction) {
           navigate("/admin/dashboard");
         }
@@ -91,7 +91,6 @@ const Login: React.FC = () => {
                 </h4>
               </div>
               <div className="flex w-[100%] bg--500 md:w-[400px] flex-col justify-center bg-grey-400 items-center text-center ">
-            
                 <form
                   onSubmit={formik.handleSubmit}
                   className="flex flex-col gap-4 w-full"
@@ -123,11 +122,7 @@ const Login: React.FC = () => {
                   )}
 
                   <div className="flex justify-center mt-2">
-                    
-                      
-                        <ReCaptchaV3Wrapper formik={formik} />
-                     
-                
+                    <ReCaptchaV3Wrapper formik={formik} />
                   </div>
                   {formik.touched.captcha && formik.errors.captcha && (
                     <div className="text-red-500 text-sm flex justify-start">
@@ -155,7 +150,6 @@ const Login: React.FC = () => {
                   </button>
                   {error && <div className="text-red-500 text-sm">{error}</div>}
                 </form>
-          
               </div>
             </div>
           </div>

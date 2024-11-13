@@ -3,7 +3,8 @@ export interface IGoogleAuth {
     google?: boolean;
   };
 
-export interface IAdminLogin{
+export interface ILogin{
   email :string ;
-  password : string
+  password : string;
+  recaptchaToken?:string;
 }

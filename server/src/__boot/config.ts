@@ -14,8 +14,9 @@ export const config={
     secrets: {
         access_token: envString('ACCESS_TOKEN_SECRET', 'testsecret'),
         refresh_token: envString('REFRESH_TOKEN_SECRET', 'testsecret'),
+        recaptcha_secret:envString('SECRET_KEY',"testkeygooglerecaptcha")
     },
     client:{
         clienturl:envString('CLIENT_URL','http://localhost:5173')
-    }
+    },
 }

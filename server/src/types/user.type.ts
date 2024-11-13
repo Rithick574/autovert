@@ -8,8 +8,8 @@ export interface IUser extends Document {
   lastPasswordChanged:Date;
   version:number;
   isActive:true;
-  createdAt:Date;
-  updatedAt:Date;
+  createdAt?:Date;
+  updatedAt?:Date;
   matchPassword(password: string): Promise<boolean>;
   checkIsadmin(email: String): Promise<any>;
 }

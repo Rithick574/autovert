@@ -9,17 +9,29 @@ import { useFormik } from "formik";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import LoginBG from "../../assets/animation/loginBg.json";
-import ReCAPTCHA from "react-google-recaptcha";
+import {useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useEffect } from "react";
 // import { LoaderPinwheel  } from "lucide-react";
+
+const ReCaptchaV3Wrapper = ({ formik }: any) => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  useEffect(() => {
+    const handleReCaptchaVerify = async () => {
+      if (!executeRecaptcha) return;
+      const token = await executeRecaptcha("adminLogin");
+      formik.setFieldValue("captcha", token);
+    };
+    handleReCaptchaVerify();
+  }, [executeRecaptcha, formik.setFieldValue]);
+
+  return null;
+};
 
 const Login: React.FC = () => {
   const { error, loading } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
-  const handleCaptchaChange = (value: string | null) => {
-    formik.setFieldValue("captcha", value);
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -29,6 +41,13 @@ const Login: React.FC = () => {
     },
     validationSchema: AdminvalidationSchema,
     onSubmit: async (values) => {
+      if (!values.captcha) {
+        formik.setFieldError(
+          "captcha",
+          "Please complete the captcha verification"
+        );
+        return;
+      }
       try {
         const resultAction = await dispatch(adminLogin(values)).unwrap();
         if (resultAction) {
@@ -72,6 +91,7 @@ const Login: React.FC = () => {
                 </h4>
               </div>
               <div className="flex w-[100%] bg--500 md:w-[400px] flex-col justify-center bg-grey-400 items-center text-center ">
+            
                 <form
                   onSubmit={formik.handleSubmit}
                   className="flex flex-col gap-4 w-full"
@@ -103,11 +123,11 @@ const Login: React.FC = () => {
                   )}
 
                   <div className="flex justify-center mt-2">
-                    <ReCAPTCHA
-                      sitekey="6LcAYH0qAAAAABmj6Yg_umsmD1kbbF_9DGpXrhGC"
-                      onChange={handleCaptchaChange}
-                      theme="light"
-                    />
+                    
+                      
+                        <ReCaptchaV3Wrapper formik={formik} />
+                     
+                
                   </div>
                   {formik.touched.captcha && formik.errors.captcha && (
                     <div className="text-red-500 text-sm flex justify-start">
@@ -135,6 +155,7 @@ const Login: React.FC = () => {
                   </button>
                   {error && <div className="text-red-500 text-sm">{error}</div>}
                 </form>
+          
               </div>
             </div>
           </div>

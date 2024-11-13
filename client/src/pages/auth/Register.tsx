@@ -8,12 +8,14 @@ import { register, registerGoogle } from "../../store/actions/user.actions";
 import { useNavigate } from "react-router-dom";
 import { validationSchema } from "../../validation/Auth";
 import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 // import { LoaderPinwheel } from 'lucide-react';
 
 const Register: React.FC = () => {
   const { error, loading } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const registerWithGoogle = (data: any) => {
     dispatch(registerGoogle(data));
@@ -57,6 +59,12 @@ const Register: React.FC = () => {
               validationSchema={toFormikValidationSchema(validationSchema)}
               onSubmit={async (values) => {
                 try {
+                  if (!executeRecaptcha) {
+                    console.log("Execute recaptcha not yet available");
+                    return;
+                  }
+                  const token = await executeRecaptcha("register_form");
+                  console.log("reCAPTCHA Token:", token);
                   const resultAction = await dispatch(register(values));
                   if (register.fulfilled.match(resultAction)) {
                     navigate("/verify-data", { state: { formData: values } });
@@ -164,8 +172,7 @@ const Register: React.FC = () => {
                     )}
                   </button>
 
-                  <p className="mb-[-10px]">or</p>
-
+                  <p className="mb-[-10px] dark:text-white">or</p>
                   <div className="flex justify-center w-full ">
                     <GoogleLogin
                       onSuccess={(credentialResponse) => {

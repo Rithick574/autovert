@@ -7,18 +7,20 @@ import { Toaster } from "react-hot-toast";
 import { store } from "./store";
 import { ThemeProvider } from "./context/theme-provider.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { GOOGLE_CLIENT_ID } from "./common/configurations.tsx";
+import { GOOGLE_CLIENT_ID, SITE_KEY } from "./common/configurations.tsx";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-    <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
-
       <ThemeProvider>
-        <Toaster position="top-center" />
-        <App />
+        <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
+          <GoogleReCaptchaProvider reCaptchaKey={SITE_KEY}>
+            <Toaster position="top-center" />
+            <App />
+          </GoogleReCaptchaProvider>
+        </GoogleOAuthProvider>
       </ThemeProvider>
-    </GoogleOAuthProvider>
     </Provider>
   </StrictMode>
 );

@@ -1,6 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 
 export const GOOGLE_CLIENT_ID = import.meta.env.VITE_REACT_APP_GOOGLE_ID;
+export const SITE_KEY = import.meta.env.VITE_REACT_APP_SITE_KEY;
 
 interface ApiResponseError extends Error {
   response?: {

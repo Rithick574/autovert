@@ -13,28 +13,20 @@ import Loading from "./components/common/Loading";
 import AppRoutes from "./Routes";
 
 function App() {
-  const { user,loading } = useSelector((state: RootState) => state.user);
+  const { user, loading } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
+
   useEffect(() => {
-    const initializeApp = async () => {
-      if (!user) {
-        await dispatch(getUserData());
-      }
-    };
-    initializeApp();
+    if (!user) {
+      dispatch(getUserData());
+    }
   }, [dispatch, user]);
+
+  const isLoginPage = location.pathname === "/login";
+
   return (
     <>
-      <BrowserRouter>
-          {loading ? (
-             <>
-             <Loading />
-             {console.log("Loading...")}
-           </>
-          ):(
-            <AppRoutes/>
-          )}
-      </BrowserRouter>
+      <BrowserRouter>{loading  && !isLoginPage  ? <Loading /> : <AppRoutes />}</BrowserRouter>
     </>
   );
 }

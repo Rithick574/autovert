@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import LoginBG from "../../assets/animation/loginBg.json";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const ReCaptchaV3Wrapper = ({ formik }: any) => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -28,7 +28,8 @@ const ReCaptchaV3Wrapper = ({ formik }: any) => {
 };
 
 const Login: React.FC = () => {
-  const { error, loading } = useSelector((state: RootState) => state.user);
+  const { error } = useSelector((state: RootState) => state.user);
+  const [loading,setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -48,11 +49,14 @@ const Login: React.FC = () => {
         return;
       }
       try {
+        setLoading(true);
         const resultAction = await dispatch(LoginAction(values)).unwrap();
         if (resultAction) {
+          setLoading(false);
           navigate("/admin/dashboard");
         }
       } catch (error: unknown) {
+        setLoading(false);
         console.log(error, "Error during login");
       }
     },

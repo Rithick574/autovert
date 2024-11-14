@@ -29,6 +29,8 @@ export const LoginController = async (
     if (!isMatch) {
       return next(ErrorResponse.unauthorized("Invalid password"));
     }
+    const userData = user.toObject();
+    delete userData.password;
 
     const accessToken = generateAccessToken({
       _id: user.id,
@@ -44,17 +46,17 @@ export const LoginController = async (
     res.cookie("access_token", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     res.cookie("refresh_token", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
     res
       .status(200)
-      .json({ success: true, message: "Login successful", data: user });
+      .json({ success: true, message: "Login successful", data: userData });
   } catch (error) {
     next(error);
   }
@@ -68,16 +70,68 @@ export const registerAdmin = async (
   try {
     const { name, email, password } = req.body;
     const existes = await userModel.findOne({ email });
-    if(existes) return next(ErrorResponse.conflict("admin already exists")); 
+    if (existes) return next(ErrorResponse.conflict("admin already exists"));
     const user = new userModel({
       name,
       email,
       password,
-      role: 'admin',
+      role: "admin",
     });
 
     await user.save();
     res.status(201).json({ message: "Admin registered successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    res.cookie("access_token", "", {
+      maxAge: 1,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.cookie("refresh_token", "", {
+      maxAge: 1,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      return next(ErrorResponse.unauthorized("Authentication required"));
+    }
+    const user = await userModel
+      .findOne({ email: req.user.email })
+      .select("-password");
+    if (!user) {
+      if (!user) {
+        return next(ErrorResponse.notFound("User not found"));
+      }
+    }
+    if (!user.isActive) {
+      return next(ErrorResponse.forbidden("User is blocked"));
+    }
+    res.status(200).json({ success: true, data: user, message: "user found" });
   } catch (error) {
     next(error);
   }

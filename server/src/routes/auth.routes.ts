@@ -10,12 +10,12 @@ import { protect, validateBody } from "@/middlewares";
 
 const router = Router();
 
-router.post("/register-admin", registerAdmin);
 router
-  .route("/")
-  .post(validateBody(loginSchema), LoginController)
-  .delete(logout)
-  .get(protect, getUser);
+.route("/")
+.post(validateBody(loginSchema), LoginController)
+.delete(logout)
+.get(protect, getUser);
 router.route("/register").post();
+router.post("/register-admin", registerAdmin);
 
 export { router as authRoutes };

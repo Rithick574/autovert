@@ -53,7 +53,7 @@ const Login: React.FC = () => {
         const resultAction = await dispatch(LoginAction(values)).unwrap();
         if (resultAction) {
           setLoading(false);
-          navigate("/admin/dashboard");
+          navigate("/admin/");
         }
       } catch (error: unknown) {
         setLoading(false);

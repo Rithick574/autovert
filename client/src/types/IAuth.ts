@@ -8,3 +8,10 @@ export interface ILogin{
   password : string;
   recaptchaToken?:string;
 }
+
+
+export type ProtectedRouteProps = {
+  element: React.ReactNode;
+  // allowedRoles: string[];
+  // children?: React.ReactNode;
+};

@@ -14,7 +14,7 @@ const educationalInfoSchema = new Schema<IEducationalInfo>(
   { timestamps: true }
 );
 
-module.exports = model<IEducationalInfo>(
+export const educationModel = model<IEducationalInfo>(
   "EducationalInfo",
   educationalInfoSchema
 );

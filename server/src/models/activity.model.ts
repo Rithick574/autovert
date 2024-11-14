@@ -20,4 +20,4 @@ const activityLogSchema = new Schema<IActivity>(
   { timestamps: true }
 );
 
-module.exports = model<IActivity>("ActivityLog", activityLogSchema);
+export const activityLogModel = model<IActivity>("ActivityLog", activityLogSchema);

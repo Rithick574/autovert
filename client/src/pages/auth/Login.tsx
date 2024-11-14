@@ -11,7 +11,6 @@ import Lottie from "lottie-react";
 import LoginBG from "../../assets/animation/loginBg.json";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useEffect } from "react";
-// import { LoaderPinwheel  } from "lucide-react";
 
 const ReCaptchaV3Wrapper = ({ formik }: any) => {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -142,7 +141,6 @@ const Login: React.FC = () => {
                           src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxvYWRlci1waW53aGVlbCI+PHBhdGggZD0iTTIyIDEyYTEgMSAwIDAgMS0xMCAwIDEgMSAwIDAgMC0xMCAwIi8+PHBhdGggZD0iTTcgMjAuN2ExIDEgMCAxIDEgNS04LjcgMSAxIDAgMSAwIDUtOC42Ii8+PHBhdGggZD0iTTcgMy4zYTEgMSAwIDEgMSA1IDguNiAxIDEgMCAxIDAgNSA4LjYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjwvc3ZnPg=="
                           className="w-5 animate-spin"
                         />
-                        {/* <LoaderPinwheel className="w-5 animate-spin" /> */}
                       </span>
                     ) : (
                       "Log in"

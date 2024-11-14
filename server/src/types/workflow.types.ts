@@ -13,6 +13,7 @@ export interface IWorkflow extends Document {
     name: string;
     type: "sequential" | "parallel" | "conditional";
     steps: IWorkflowStep[];
+    description:string;
     version: number;
     createdAt?: Date;
     updatedAt?: Date;

@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import mongoSanitize from "express-mongo-sanitize";
 import morgan from "morgan";
 import {notFound,errorHandler} from "@/middlewares"
-import { authRoutes } from "./routes";
+import { authRoutes, workflowRoutes } from "./routes";
 
 dotenv.config();
 
@@ -39,6 +39,7 @@ app.use(morgan("dev"));
 
 //Routes
 app.use('/api/v1/auth',authRoutes)
+app.use('/api/v1/workflows', workflowRoutes);
 
 //error handling middlewares
 app.use(notFound);

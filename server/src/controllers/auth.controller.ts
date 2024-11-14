@@ -5,28 +5,27 @@ import { userModel } from "@/models/user.model";
 import { config } from "@/__boot/config";
 import axios from "axios";
 
-
 export const LoginController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { email, password, captcha } = req.body; 
+    const { email, password, captcha } = req.body;
     const url = `https://www.google.com/recaptcha/api/siteverify?secret=${config.secrets.recaptcha_secret}&response=${captcha}`;
     const response = await axios.post(url);
-    
+
     if (!response.data.success) {
       return next(ErrorResponse.badRequest("reCAPTCHA verification failed"));
     }
 
-    const user = await userModel.findOne({email});
+    const user = await userModel.findOne({ email });
 
     if (!user) {
       return next(ErrorResponse.unauthorized("Invalid email"));
-    };
+    }
 
-    const isMatch = await user.matchPassword(password); 
+    const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return next(ErrorResponse.unauthorized("Invalid password"));
     }
@@ -56,6 +55,29 @@ export const LoginController = async (
     res
       .status(200)
       .json({ success: true, message: "Login successful", data: user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const registerAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { name, email, password } = req.body;
+    const existes = await userModel.findOne({ email });
+    if(existes) return next(ErrorResponse.conflict("admin already exists")); 
+    const user = new userModel({
+      name,
+      email,
+      password,
+      role: 'admin',
+    });
+
+    await user.save();
+    res.status(201).json({ message: "Admin registered successfully" });
   } catch (error) {
     next(error);
   }

@@ -13,4 +13,4 @@ const professionalInfoSchema = new Schema<IProfessionalInfo>({
 {timestamps:true}
 );
 
-module.exports = model<IProfessionalInfo>('ProfessionalInfo', professionalInfoSchema);
+export const professionalinfoModel = model<IProfessionalInfo>('ProfessionalInfo', professionalInfoSchema);

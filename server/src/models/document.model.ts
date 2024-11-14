@@ -30,4 +30,4 @@ const documentSchema = new Schema<IDocument>({
   uploadedAt: { type: Date, default: Date.now }
 });
 
-export default model<IDocument>('Document', documentSchema);
+export const documentModel =  model<IDocument>('Document', documentSchema);

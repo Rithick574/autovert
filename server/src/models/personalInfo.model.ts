@@ -26,4 +26,4 @@ const personalInfoSchema = new Schema<IPersonalInfo>(
   { timestamps: true }
 );
 
-module.exports = model<IPersonalInfo>("PersonalInfo", personalInfoSchema);
+export const personalInfoModel = model<IPersonalInfo>("PersonalInfo", personalInfoSchema);

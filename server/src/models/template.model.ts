@@ -16,4 +16,4 @@ templateSchema.pre("save", function (next) {
   next();
 });
 
-module.exports = model<ITemplate>("Template", templateSchema);
+export const templateModel = model<ITemplate>("Template", templateSchema);

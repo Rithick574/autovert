@@ -4,6 +4,7 @@ import { Schema, model } from "mongoose";
 const workflowSchema = new Schema<IWorkflow>(
   {
     name: { type: String, required: true },
+    description: { type: String },
     type: {
       type: String,
       enum: ["sequential", "parallel", "conditional"],
@@ -16,8 +17,6 @@ const workflowSchema = new Schema<IWorkflow>(
           type: String,
           enum: ["action", "approval", "notification"],
         },
-        assignedTo: { type: Schema.Types.ObjectId, ref: "User" },
-        conditions: Object, //metadata
         nextStep: { type: Schema.Types.ObjectId, ref: "Step" },
       },
     ],
@@ -32,4 +31,4 @@ workflowSchema.pre('save', function (next) {
     next();
   });
 
-module.exports = model<IWorkflow>("Workflow", workflowSchema);
+export const workflowModel = model<IWorkflow>("Workflow", workflowSchema);

@@ -14,4 +14,4 @@ const fieldSchema = new Schema<IField>(
   { timestamps: true }
 );
 
-module.exports = model<IField>("Field", fieldSchema);
+export const fieldModel= model<IField>("Field", fieldSchema);

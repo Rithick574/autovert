@@ -3,7 +3,7 @@ import { ITemplate } from "@/types/template.types";
 
 const templateSchema = new Schema<ITemplate>(
   {
-    templateName: { type: String, required: true },
+    title: { type: String, required: true },
     content: { type: String, required: true },
     version: { type: Number, default: 1 },
   },

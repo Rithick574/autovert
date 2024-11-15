@@ -1,23 +1,25 @@
 import { Router } from "express";
 import {
   createWorkflow,
-//   getWorkflows,
-//   getWorkflow,
-//   updateWorkflow,
-//   deleteWorkflow,
-} from "../controllers/workflow.controller"
-import { protect,protectAdmin }  from "../middlewares/auth.middleware"
+  getAllworkflows,
+  GetsingleWorkflow,
+  updateWorkflow,
+  DeleteWorkFlow,
+  getLatestWorkflow,
+} from "../controllers/workflow.controller";
+import { protect, protectAdmin } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.use(protect,protectAdmin);
+router.use(protect, protectAdmin);
 
-router.post("/create", createWorkflow);
-// router.get("/", getWorkflows);
-// router
-//   .route("/:id")
-//   .get(getWorkflow)
-//   .put(updateWorkflow)
-//   .delete(deleteWorkflow);
+router.get("/latest", getLatestWorkflow);
+router.route("/").post(createWorkflow).get(getAllworkflows);
+router
+  .route("/:id")
+  .get(GetsingleWorkflow)
+  .put(updateWorkflow)
+  .delete(DeleteWorkFlow);
 
+  
 export { router as workflowRoutes };

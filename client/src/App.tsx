@@ -15,6 +15,11 @@ import Dashboard from "./pages/admin/Dashboard";
 //user
 import UserDashBoard from "./pages/user/UserDashBoard";
 
+//test
+import WorkflowEditor from "./pages/admin/WorkflowEditor"
+import Workflow from "./pages/admin/Workflow";
+
+
 
 function App() {
   const { user,loading } = useSelector((state: RootState) => state.user);
@@ -49,6 +54,10 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />}/> 
 
+          //test
+          <Route path="workflow" element={<WorkflowEditor />}/> 
+          <Route path="test" element={<Workflow />}/> 
+
           {/* Admin Routes */}
           {(user && user.role === "admin") ? (
             <Route path="/admin/*" element={<AdminRoutes />} />
@@ -70,10 +79,10 @@ const AdminRoutes = () => {
     <Routes>
         <Route path="/" element={<Layout />}>
         <Route index element={<Dashboard />} />
-        {/* <Route path="workflow" element={<Workflow />} />
-        <Route path="template" element={<Template />} />
-        <Route path="dynamic-field" element={<DynamicField />} />
-        <Route path="" element={<Navigate to="dashboard" replace />} /> */}
+        <Route path="/workflow" element={<WorkflowEditor />} />
+        {/* <Route path="template" element={<Template />} />
+        <Route path="dynamic-field" element={<DynamicField />} /> */}
+        <Route path="" element={<Navigate to="dashboard" replace />} />
       </Route>
     </Routes>
   );

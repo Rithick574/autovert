@@ -12,23 +12,14 @@ const workflowSchema = new Schema<IWorkflow>(
     },
     steps: [
       {
+        id: String,
         stepName: String,
-        stepType: {
-          type: String,
-          enum: ["action", "approval", "notification"],
-        },
-        nextStep: { type: Schema.Types.ObjectId, ref: "Step" },
+        stepType: String,
       },
     ],
     version: { type: Number, default: 1 },
   },
   { timestamps: true }
 );
-
-workflowSchema.pre('save', function (next) {
-    this.updatedAt = new Date();
-    this.version += 1;
-    next();
-  });
 
 export const workflowModel = model<IWorkflow>("Workflow", workflowSchema);

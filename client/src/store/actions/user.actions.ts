@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { config, handleError } from "../../common/configurations";
 import { URL } from "../../common/api";
-import { ILogin, IGoogleAuth } from "../../types/IAuth";
+import { ILogin, IGoogleAuth } from "../../constants/types/IAuth";
 
 interface UserCredentials {
   email: string;

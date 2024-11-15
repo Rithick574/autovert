@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Navigate } from "react-router-dom";
-import { ProtectedRouteProps } from "../types/IAuth";
+import { ProtectedRouteProps } from "../constants/types/IAuth";
 
 // export const ProtectedRoute = ({
 //   element,

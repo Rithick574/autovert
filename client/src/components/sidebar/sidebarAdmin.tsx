@@ -43,7 +43,7 @@ const NavbarAdmin: React.FC = () => {
   return (
     <div className="dark:bg-dark-bg w-16 h-screen flex flex-col justify-center items-center shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
       <div className="h-[10%] w-14 flex flex-col justify-center items-center">
-        <Link to="/admin/dashboard">
+        <Link to="/admin">
           <div
             className="w-10 h-8 bg-contain hover:cursor-pointer"
             style={{ backgroundImage: `url(${logo})` }}
@@ -52,7 +52,7 @@ const NavbarAdmin: React.FC = () => {
       </div>
       <div className="h-[90%] w-14 flex justify-center items-center">
         <ul className="gap-6 flex flex-col">
-          <Link to="/admin/dashboard">
+          <Link to="/admin">
             <li
               onClick={() => handleIconClick("dashboard")}
               className="w-11 h-11 bg-contain flex justify-center items-center"

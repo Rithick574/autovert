@@ -1,4 +1,4 @@
-import express, {Application } from "express";
+import express, { Application } from "express";
 import { config } from "@/__boot/config";
 import { limiter } from "@/__lib/http/rateLimit";
 import dotenv from "dotenv";
@@ -7,8 +7,13 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import mongoSanitize from "express-mongo-sanitize";
 import morgan from "morgan";
-import {notFound,errorHandler} from "@/middlewares"
-import { authRoutes, workflowRoutes } from "./routes";
+import { notFound, errorHandler } from "@/middlewares";
+import {
+  authRoutes,
+  workflowRoutes,
+  templateRoutes,
+  fieldRoutes,
+} from "./routes";
 
 dotenv.config();
 
@@ -38,11 +43,13 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 //Routes
-app.use('/api/v1/auth',authRoutes)
-app.use('/api/v1/workflows', workflowRoutes);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/workflows", workflowRoutes);
+app.use("/api/v1/templates", templateRoutes);
+app.use("/api/v1/fields", fieldRoutes);
 
 //error handling middlewares
 app.use(notFound);
-app.use(errorHandler)
+app.use(errorHandler);
 
 export default app;

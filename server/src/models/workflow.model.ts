@@ -10,11 +10,18 @@ const workflowSchema = new Schema<IWorkflow>(
       enum: ["sequential", "parallel", "conditional"],
       default: "sequential",
     },
+    isActive: { type: Boolean, default: false },
     steps: [
       {
-        id: String,
-        stepName: String,
-        stepType: String,
+        title: { type: String, required: true },
+        order: {
+          type: Number,
+          required: true,
+          validate: {
+            validator: Number.isInteger,
+            message: "Order must be an integer.",
+          },
+        },
       },
     ],
     version: { type: Number, default: 1 },

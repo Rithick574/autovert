@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { validationSchema } from "../../validation/Auth";
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-// import { LoaderPinwheel } from 'lucide-react';
 
 const Register: React.FC = () => {
   const { error, loading } = useSelector((state: RootState) => state.user);

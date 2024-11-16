@@ -1,7 +1,11 @@
 export interface IField extends Document {
-    fieldName: string;
-    fieldType: "text" | "number" | "date" | "email";
-    isRequired: boolean;
+    name: string;
+    type: "text" | "number" | "date" | "email" |"select" | "textarea";
+    required: boolean;
+    placeholder:string;
+    validation:string;
+    description:string;
     createdAt?: Date;
     updatedAt?: Date;
+    options:[];
   }

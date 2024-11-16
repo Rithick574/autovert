@@ -1,19 +1,21 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 import { ITemplate } from "@/types/template.types";
 
 const templateSchema = new Schema<ITemplate>(
   {
     title: { type: String, required: true },
-    content: { type: String, required: true },
-    version: { type: Number, default: 1 },
+    workflowId: {
+      type: Schema.Types.ObjectId,
+      ref: "Workflow",
+      required: true,
+    },
+    stepId: { type: Schema.Types.ObjectId, required: true },
+    fields: [{ type: Schema.Types.ObjectId, ref: "Field", required: true }],
+    originalId: { type: Types.ObjectId, ref: "Template" },
+    version: { type: Number, required: true, default: 1 },
   },
   { timestamps: true }
-);
+);  
 
-templateSchema.pre("save", function (next) {
-  this.updatedAt = new Date();
-  this.version += 1;
-  next();
-});
 
 export const templateModel = model<ITemplate>("Template", templateSchema);

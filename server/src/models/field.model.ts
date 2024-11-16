@@ -3,13 +3,17 @@ import { Schema, model } from "mongoose";
 
 const fieldSchema = new Schema<IField>(
   {
-    fieldName: { type: String, required: true },
-    fieldType: {
+    name: { type: String, required: true },
+    type: {
       type: String,
-      enum: ["text", "number", "date", "email"],
+      enum: ["text", "number", "date", "email","select", "textarea"],
       required: true,
     },
-    isRequired: { type: Boolean, default: false },
+    required: { type: Boolean, default: false },
+    placeholder: { type: String },
+    description: { type: String },
+    validation: { type: String },
+    options: { type: [String], default: [] },
   },
   { timestamps: true }
 );

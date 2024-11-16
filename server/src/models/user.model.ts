@@ -11,6 +11,18 @@ const userSchema = new Schema<IUser>(
     isActive: { type: Boolean, default: true },
     lastPasswordChanged: { type: Date, required: true, default: Date.now },
     version: { type: Number, ref: "Versions" },
+    onboardingData: [
+      {
+        workflowId: { type: Schema.Types.ObjectId, ref: "Workflow" },
+        stepId: { type: Schema.Types.ObjectId, ref: "Workflow.steps" },
+        fields: [
+          {
+            fieldId: { type: Schema.Types.ObjectId, ref: "Field" },
+            value: { type: Schema.Types.Mixed },
+          },
+        ],
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { workflowModel } from "@/models/workflow.model";
 import ErrorResponse from "@/middlewares/errorResponse";
 import { activityLogModel } from "@/models/activity.model";
+import { templateModel } from "@/models/template.model";
 
 export const createWorkflow = async (
   req: Request,
@@ -9,21 +10,40 @@ export const createWorkflow = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { name, steps, description } = req.body;
+    const { steps, description } = req.body;
     const latestWorkflow = await workflowModel
-      .findOne({ name })
+      .findOne()
       .sort({ version: -1 })
       .lean();
+
+    if (latestWorkflow) {
+      const previousVersion = latestWorkflow.version;
+
+      if (previousVersion !== 1) {
+        const previousTemplate = await templateModel.findOne({
+          version: previousVersion,
+        });
+
+        if (!previousTemplate) {
+          return next(
+            ErrorResponse.badRequest(
+              `Please complete the template for the previous version (version ${previousVersion}) before creating a new workflow.`
+            )
+          );
+        }
+      }
+    }
 
     let newVersion = 1;
     if (latestWorkflow) {
       newVersion = latestWorkflow.version + 1;
     }
     const newWorkflow = new workflowModel({
-      name,
+      name: "User_Onboarding_Workflow",
       description,
       steps,
       version: newVersion,
+      isActive: false,
     });
 
     await newWorkflow.save();
@@ -146,9 +166,8 @@ export const getLatestWorkflow = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    console.log("fghbjn");
-    
-    const latestWorkflow = await workflowModel.findOne()
+    const latestWorkflow = await workflowModel
+      .findOne()
       .sort({ createdAt: -1 })
       .exec();
 
@@ -156,13 +175,11 @@ export const getLatestWorkflow = async (
       return next(ErrorResponse.notFound("No workflows found"));
     }
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: latestWorkflow,
-        message: "latest workflow retrieved",
-      });
+    res.status(200).json({
+      success: true,
+      data: latestWorkflow,
+      message: "latest workflow retrieved",
+    });
   } catch (error) {
     next(error);
   }

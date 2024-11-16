@@ -4,7 +4,8 @@ import logo from "../../assets/icons/SyncWorksLogo.svg";
 import { useTheme } from "../../context/theme-provider";
 import { FiActivity } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
-import { LuLayoutDashboard,LuLayoutPanelTop } from "react-icons/lu";
+import { LuLayoutDashboard, LuLayoutPanelTop } from "react-icons/lu";
+import { PiGitPullRequestLight } from "react-icons/pi";
 import { GoWorkflow } from "react-icons/go";
 
 const NavbarAdmin: React.FC = () => {
@@ -41,7 +42,7 @@ const NavbarAdmin: React.FC = () => {
   };
 
   return (
-    <div className="dark:bg-dark-bg w-16 h-screen flex flex-col justify-center items-center shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
+    <div className="md:fixed dark:bg-dark-bg w-16 h-screen flex flex-col justify-center items-center shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px]">
       <div className="h-[10%] w-14 flex flex-col justify-center items-center">
         <Link to="/admin">
           <div
@@ -76,16 +77,27 @@ const NavbarAdmin: React.FC = () => {
               <LuLayoutPanelTop color={iconColor("template")} width={23} />
             </li>
           </Link>
-          <Link to="/admin/dynamic-field">
+          <Link to="/admin/forms">
             <li
-              onClick={() => handleIconClick("dynamic-field")}
+              onClick={() => handleIconClick("forms")}
               className="w-11 h-11 bg-contain flex justify-center items-center"
             >
-              <FiActivity color={iconColor("dynamic-field")} size={23} />
+              <FiActivity color={iconColor("forms")} size={23} />
+            </li>
+          </Link>
+          <Link to="/admin/applications">
+            <li
+              onClick={() => handleIconClick("applications")}
+              className="w-11 h-11 bg-contain flex justify-center items-center"
+            >
+              <PiGitPullRequestLight
+                color={iconColor("applications")}
+                size={23}
+              />
             </li>
           </Link>
 
-          <Link to="">
+          <Link to="/admin/settings">
             <li
               onClick={() => handleIconClick("settings")}
               className="w-11 h-11 bg-contain flex justify-center items-center"

@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  RouterProvider,
+  Routes,
+  createBrowserRouter,
+} from "react-router-dom";
 import { AppDispatch, RootState } from "./store";
 
 //auth
@@ -11,18 +17,35 @@ import { getUserData } from "./store/actions/user.actions";
 //admin
 import Layout from "./pages/admin/Layout";
 import Dashboard from "./pages/admin/Dashboard";
+import Settings from "./pages/admin/Settings";
+import Template from "./pages/admin/Template";
+import Forms from "./pages/admin/Forms";
+import WorkflowEditor from "./pages/admin/WorkflowEditor";
+import Applications from "./pages/admin/Applications";
 
 //user
 import UserDashBoard from "./pages/user/UserDashBoard";
 
-//test
-import WorkflowEditor from "./pages/admin/WorkflowEditor"
-import Workflow from "./pages/admin/Workflow";
-
-
+// Admin Routes
+const AdminRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="/workflow" element={<WorkflowEditor />} />
+        <Route path="/template" element={<Template />} />
+        <Route path="/forms" element={<Forms />} />
+        <Route path="/forms" element={<Forms />} />
+        <Route path="/applications" element={<Applications />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="" element={<Navigate to="dashboard" replace />} />
+      </Route>
+    </Routes>
+  );
+};
 
 function App() {
-  const { user,loading } = useSelector((state: RootState) => state.user);
+  const { user, loading } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -31,59 +54,30 @@ function App() {
     }
   }, [dispatch, user]);
 
- 
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              user ? (
-                user.role === "admin" ? (
-                  <Navigate to="/admin/" />
-                ) : (
-                  <UserDashBoard />
-                )
-              ) : (
-                <Register />
-              )
-            }
-          />
-          //auth pages
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />}/> 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: user ? (
+        user.role === "admin" ? (
+          <Navigate to="/admin/" />
+        ) : (
+          <UserDashBoard />
+        )
+      ) : (
+        <Register />
+      ),
+    },
+    { path: "login", element: <Login /> },
+    { path: "register", element: <Register /> },
+    { path: "workflow", element: <WorkflowEditor /> },
+    {
+      path: "/admin/*",
+      element:
+        user && user.role === "admin" ? <AdminRoutes /> : <Navigate to="/" />,
+    },
+  ]);
 
-          //test
-          <Route path="workflow" element={<WorkflowEditor />}/> 
-          <Route path="test" element={<Workflow />}/> 
-
-          {/* Admin Routes */}
-          {(user && user.role === "admin") ? (
-            <Route path="/admin/*" element={<AdminRoutes />} />
-          ) : (
-            <Route path="/admin" element={<Navigate to="/" />} />
-          )}
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
-
-
-
-const AdminRoutes = () => {
-  return (
-    <Routes>
-        <Route path="/" element={<Layout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="/workflow" element={<WorkflowEditor />} />
-        {/* <Route path="template" element={<Template />} />
-        <Route path="dynamic-field" element={<DynamicField />} /> */}
-        <Route path="" element={<Navigate to="dashboard" replace />} />
-      </Route>
-    </Routes>
-  );
-};

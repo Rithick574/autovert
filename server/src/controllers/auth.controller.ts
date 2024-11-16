@@ -136,3 +136,51 @@ export const getUser = async (
     next(error);
   }
 };
+
+export const saveOnboardingData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user?._id;
+    const { workflowId, stepId, fields } = req.body;
+
+    if (!workflowId || !stepId || !fields || !Array.isArray(fields)) {
+      return next(
+        ErrorResponse.badRequest(
+          "Invalid request. Ensure workflowId, stepId, and fields are provided."
+        )
+      );
+    }
+    const user = await userModel.findById(userId);
+    if (!user) return next(ErrorResponse.notFound("User not found"));
+
+    const existingStepIndex = user.onboardingData?.findIndex(
+      (step) => step.stepId.toString() === stepId
+    );
+    if (
+      existingStepIndex !== undefined &&
+      existingStepIndex !== -1 &&
+      user.onboardingData
+    ) {
+      user.onboardingData[existingStepIndex].fields = fields;
+    } else {
+      const newStep = {
+        workflowId,
+        stepId,
+        fields,
+      };
+      user.onboardingData = [...(user.onboardingData || []), newStep];
+    }
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Onboarding data saved successfully",
+      data: user.onboardingData,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

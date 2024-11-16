@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UserDashBoard = () => {
+const UserDashBoard:React.FC = () => {
   return (
     <div>UserDashBoard</div>
   )

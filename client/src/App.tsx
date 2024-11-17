@@ -20,6 +20,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import Settings from "./pages/admin/Settings";
 import Template from "./pages/admin/Template";
 import Forms from "./pages/admin/Forms";
+import StepTemplate from "./components/admin/template/StepTemplate";
 import WorkflowEditor from "./pages/admin/WorkflowEditor";
 import Applications from "./pages/admin/Applications";
 
@@ -34,6 +35,7 @@ const AdminRoutes = () => {
         <Route index element={<Dashboard />} />
         <Route path="/workflow" element={<WorkflowEditor />} />
         <Route path="/template" element={<Template />} />
+        <Route path="template/:stepId" element={<StepTemplate />} />
         <Route path="/forms" element={<Forms />} />
         <Route path="/forms" element={<Forms />} />
         <Route path="/applications" element={<Applications />} />

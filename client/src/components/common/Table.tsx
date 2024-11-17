@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 interface TableProps<T> {
-  data: T[]; // Data passed in can be of any type
-  columns: Array<{ label: string; accessor: keyof T }>; // Columns with label and data accessor
-  renderActions?: (row: T) => React.ReactNode; // Custom actions for each row
-  itemsPerPage?: number; // Optionally pass how many items to show per page
-  onPageChange?: (page: number) => void; // Custom page change handler
+  data: T[]; 
+  columns: Array<{ label: string; accessor: keyof T }>;
+  renderActions?: (row: T) => React.ReactNode;
+  itemsPerPage?: number; 
+  onPageChange?: (page: number) => void; 
 }
 
 const Table = <T extends {}>({
@@ -49,6 +49,11 @@ const Table = <T extends {}>({
                       <td key={colIndex} className="py-2 px-4 dark:text-neutral-300 text-center">
                         {(row[col.accessor] ?? "-") as React.ReactNode}
                       </td>
+                      // {typeof row[col.accessor] === 'string' && 
+                      //   row[col.accessor].match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
+                      //   ? formatDate(row[col.accessor] as string) 
+                      //   : (row[col.accessor] ?? "-") as React.ReactNode 
+                      // }
                     ))}
                     {renderActions && (
                       <td className="py-2 px-4 text-syncworks-blue text-center cursor-pointer">

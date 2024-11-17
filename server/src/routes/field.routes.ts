@@ -1,9 +1,10 @@
-import { createFields } from "@/controllers/field.controller";
+import { createOrUpdateField,deleteField } from "@/controllers/field.controller";
 import { Router } from "express";
 
 const router = Router();
 
-router.route('/').post(createFields);
+router.route('/').post(createOrUpdateField);
+router.route("/:fieldId/:stepId").delete(deleteField)
 
 
 

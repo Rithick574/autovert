@@ -51,46 +51,60 @@ export const createTemplate = async (
   }
 };
 
-export const editTemplate = async (
+export const updateTemplate = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
-    const { title, content } = req.body;
+    const { stepId } = req.params;
+    const { fields } = req.body;
 
-    const existingTemplate = await templateModel.findById(id);
-    if (!existingTemplate) {
+    if (!fields || fields.length === 0) {
+      return next(
+        ErrorResponse.badRequest("No fields provided for the update.")
+      );
+    }
+    const template = await templateModel.findOne({ stepId });
+    if (!template) {
       return next(ErrorResponse.notFound("Template not found"));
     }
+    const existingFieldIds = template.fields.map((field) =>
+      field._id.toString()
+  );
+  console.log("🚀 ~ file: template.controller.ts:73 ~ existingFieldIds:", existingFieldIds)
+  console.log("🚀 ~ file: template.controller.ts:79 ~ fields:", fields)
+  const newFields = fields.filter(
+    (field:any) => !existingFieldIds.includes(field)
+  );
+  
+  console.log("🚀 ~ file: template.controller.ts:78 ~ newFields:", newFields)
+    if (newFields.length === 0) {
+      return next(ErrorResponse.badRequest("No new fields to add."));
+    }
 
-    const newVersion = new templateModel({
-      title,
-      content,
-      version: existingTemplate.version + 1,
-      originalId: existingTemplate.originalId || existingTemplate._id,
-    });
+    template.fields = [...template.fields, ...newFields];
 
-    await newVersion.save();
-    res.status(200).json({
-      success: true,
-      data: existingTemplate,
-      message: "template updated",
-    });
+    await template.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Template updated successfully." });
   } catch (error) {
     next(error);
   }
 };
 
-export const getTemplateById = async (
+export const getTemplateByStepId = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { id } = req.params;
-    const template = await templateModel.findById(id);
+    const { step_id } = req.params;
+    const template = await templateModel
+      .findOne({ stepId: step_id })
+      .populate("fields");
     if (!template) {
       return next(ErrorResponse.notFound("Template not found"));
     }

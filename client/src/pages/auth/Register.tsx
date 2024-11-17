@@ -7,7 +7,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { register, registerGoogle } from "../../store/actions/user.actions";
 import { useNavigate } from "react-router-dom";
 import { validationSchema } from "../../validation/Auth";
-import { toFormikValidationSchema } from 'zod-formik-adapter';
+import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const Register: React.FC = () => {
@@ -36,7 +36,7 @@ const Register: React.FC = () => {
             <h1 className="mb-2 font-extrabold text-2xl lg:text-3xl dark:text-dark-text">
               Sign Up to get Started.
             </h1>
-            
+
             <h4 className="text-gray-400 text-sm dark:text-neutral-300">
               Enter your details to proceed further
             </h4>
@@ -161,9 +161,10 @@ const Register: React.FC = () => {
                       <>
                         <span className="flex justify-center items-center gap-2">
                           Processing
-                          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxvYWRlci1waW53aGVlbCI+PHBhdGggZD0iTTIyIDEyYTEgMSAwIDAgMS0xMCAwIDEgMSAwIDAgMC0xMCAwIi8+PHBhdGggZD0iTTcgMjAuN2ExIDEgMCAxIDEgNS04LjcgMSAxIDAgMSAwIDUtOC42Ii8+PHBhdGggZD0iTTcgMy4zYTEgMSAwIDEgMSA1IDguNiAxIDEgMCAxIDAgNSA4LjYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjwvc3ZnPg==" className="w-5 animate-spin" />
-                      
-                        {/*<LoaderPinwheel className="w-5 animate-spin" /> */}
+                          <img
+                            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxvYWRlci1waW53aGVlbCI+PHBhdGggZD0iTTIyIDEyYTEgMSAwIDAgMS0xMCAwIDEgMSAwIDAgMC0xMCAwIi8+PHBhdGggZD0iTTcgMjAuN2ExIDEgMCAxIDEgNS04LjcgMSAxIDAgMSAwIDUtOC42Ii8+PHBhdGggZD0iTTcgMy4zYTEgMSAwIDEgMSA1IDguNiAxIDEgMCAxIDAgNSA4LjYiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjwvc3ZnPg=="
+                            className="w-5 animate-spin"
+                          />
                         </span>
                       </>
                     ) : (

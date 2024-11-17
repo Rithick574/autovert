@@ -10,19 +10,22 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GOOGLE_CLIENT_ID, SITE_KEY } from "./common/configurations.tsx";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { PersistGate } from "redux-persist/integration/react";
+import ErrorBoundary from "./components/error/ErrorBoundary.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
-      <ThemeProvider>
-        <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
-          <GoogleReCaptchaProvider reCaptchaKey={SITE_KEY}>
-            <Toaster position="top-center" />
-            <PersistGate loading={null} persistor={persistor}></PersistGate>
-            <App />
-          </GoogleReCaptchaProvider>
-        </GoogleOAuthProvider>
-      </ThemeProvider>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <ThemeProvider>
+          <GoogleOAuthProvider clientId={`${GOOGLE_CLIENT_ID}`}>
+            <GoogleReCaptchaProvider reCaptchaKey={SITE_KEY}>
+              <Toaster position="top-center" />
+              <PersistGate loading={null} persistor={persistor}></PersistGate>
+              <App />
+            </GoogleReCaptchaProvider>
+          </GoogleOAuthProvider>
+        </ThemeProvider>
+      </Provider>
+    </ErrorBoundary>
   </StrictMode>
 );

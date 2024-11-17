@@ -6,16 +6,15 @@ const fieldSchema = new Schema<IField>(
     name: { type: String, required: true },
     type: {
       type: String,
-      enum: ["text", "number", "date", "email","select", "textarea"],
+      enum: ["text", "number", "date", "email", "select", "textarea", "file"],
       required: true,
     },
     required: { type: Boolean, default: false },
     placeholder: { type: String },
     description: { type: String },
-    validation: { type: String },
     options: { type: [String], default: [] },
   },
   { timestamps: true }
 );
 
-export const fieldModel= model<IField>("Field", fieldSchema);
+export const fieldModel = model<IField>("Field", fieldSchema);

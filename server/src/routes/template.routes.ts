@@ -1,21 +1,17 @@
 import { Router } from "express";
 import {
   createTemplate,
-  editTemplate,
+  updateTemplate,
   getAllTemplates,
-  getTemplateById,
+  getTemplateByStepId,
   getTemplateVersions,
 } from "@/controllers/template.controller";
 
 const router = Router();
 
-router
-  .route("/")
-  .post(createTemplate)
-  .put(editTemplate)
-  .get(getAllTemplates);
-
-router.get('/:id',getTemplateById)
-router.get('/:version',getTemplateVersions)                 
+router.route("/").post(createTemplate).get(getAllTemplates);
+router.post("/:stepId", updateTemplate);
+router.get("/:step_id", getTemplateByStepId);
+router.get("/:version", getTemplateVersions);
 
 export { router as templateRoutes };

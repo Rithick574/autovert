@@ -1,10 +1,8 @@
-// import { Link, useLocation } from "react-router-dom";
 import { Link, useLocation } from "react-router-dom";
 import SyncWorksLogo from "../common/SyncWorksLogo";
 import ThemeToggle from "../theme/theme-toggle";
 
 export default function Header() {
-  
   const location = useLocation();
 
   return (

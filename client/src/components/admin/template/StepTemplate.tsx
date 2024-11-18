@@ -13,6 +13,7 @@ const StepTemplate: React.FC = () => {
   const { stepId } = useParams<{ stepId?: string }>();
   const location = useLocation();
   const { workflowId, title } = location.state || {};
+  console.log("🚀 ~ file: StepTemplate.tsx:16 ~ title:", title)
   const [fields, setFields] = useState<IField[]>([]);
   const [templateExists, setTemplateExists] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -85,10 +86,6 @@ const StepTemplate: React.FC = () => {
         "DELETE",
         `/fields/${field._id}/${stepId}`,
         config
-      );
-      console.log(
-        "🚀 ~ file: StepTemplate.tsx:88 ~ handleDeleteField ~ response:",
-        response
       );
 
       if (response.success) {
@@ -219,7 +216,7 @@ const StepTemplate: React.FC = () => {
         <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
           {templateExists
             ? `Fields for Template in Step`
-            : "Create Fields for New Template"}
+            : `Create Fields for New Template : ${title}`}
           <span className="ml-2 text-sky-700 to-slate-700 dark:border border-neutral-800 shadow-[inset_0px_0px_7px_0px_#D3D3D3] dark:shadow-none">
             {step}
           </span>

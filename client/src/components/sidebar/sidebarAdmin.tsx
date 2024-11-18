@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/icons/SyncWorksLogo.svg";
 import { useTheme } from "../../context/theme-provider";
-import { FiActivity } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuLayoutDashboard, LuLayoutPanelTop } from "react-icons/lu";
 import { PiGitPullRequestLight } from "react-icons/pi";
@@ -75,14 +74,6 @@ const NavbarAdmin: React.FC = () => {
               className="w-11 h-11 bg-contain flex justify-center items-center"
             >
               <LuLayoutPanelTop color={iconColor("template")} width={23} />
-            </li>
-          </Link>
-          <Link to="/admin/forms">
-            <li
-              onClick={() => handleIconClick("forms")}
-              className="w-11 h-11 bg-contain flex justify-center items-center"
-            >
-              <FiActivity color={iconColor("forms")} size={23} />
             </li>
           </Link>
           <Link to="/admin/applications">

@@ -5,6 +5,7 @@ import {
   registerAdmin,
   getUser,
   logout,
+  registerUser
 } from "../controllers/auth.controller";
 import { protect, validateBody } from "@/middlewares";
 
@@ -15,7 +16,8 @@ router
 .post(validateBody(loginSchema), LoginController)
 .delete(logout)
 .get(protect, getUser);
-router.route("/register").post();
+router.route("/register").post(registerUser);
 router.post("/register-admin", registerAdmin);
+
 
 export { router as authRoutes };

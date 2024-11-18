@@ -1,23 +1,27 @@
 import { Document, ObjectId } from "mongoose";
 
-export interface IOnboardingField {
-  fieldId: ObjectId;
+interface IField {
+  fieldName: string;
   value: any;
+}
+
+interface IStep {
+  stepName: string;
+  fields: IField[];
 }
 
 export interface IOnboardingStep {
   workflowId: ObjectId;
-  stepId: ObjectId;
-  fields: IOnboardingField[];
+  steps: IStep[];
 }
 
 export interface IUser extends Document {
-  name: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password?: string;
   role: "admin" | "user";
   lastPasswordChanged: Date;
-  version: number;
   isActive: true;
   createdAt?: Date;
   updatedAt?: Date;

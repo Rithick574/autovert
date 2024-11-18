@@ -13,6 +13,7 @@ import {
   workflowRoutes,
   templateRoutes,
   fieldRoutes,
+  onboardingRoutes,
 } from "./routes";
 
 dotenv.config();
@@ -47,6 +48,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/workflows", workflowRoutes);
 app.use("/api/v1/templates", templateRoutes);
 app.use("/api/v1/fields", fieldRoutes);
+app.use("/api/v1/onboarding",onboardingRoutes)
 
 //error handling middlewares
 app.use(notFound);

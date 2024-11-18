@@ -72,13 +72,10 @@ export const updateTemplate = async (
     const existingFieldIds = template.fields.map((field) =>
       field._id.toString()
   );
-  console.log("🚀 ~ file: template.controller.ts:73 ~ existingFieldIds:", existingFieldIds)
-  console.log("🚀 ~ file: template.controller.ts:79 ~ fields:", fields)
   const newFields = fields.filter(
     (field:any) => !existingFieldIds.includes(field)
   );
   
-  console.log("🚀 ~ file: template.controller.ts:78 ~ newFields:", newFields)
     if (newFields.length === 0) {
       return next(ErrorResponse.badRequest("No new fields to add."));
     }

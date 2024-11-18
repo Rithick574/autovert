@@ -54,19 +54,27 @@ const Register: React.FC = () => {
                 email: "",
                 password: "",
                 confirmPassword: "",
+                captcha: "",
               }}
               validationSchema={toFormikValidationSchema(validationSchema)}
-              onSubmit={async (values) => {
+              onSubmit={async (values, { setFieldValue }) => {
                 try {
                   if (!executeRecaptcha) {
                     console.log("Execute recaptcha not yet available");
                     return;
                   }
                   const token = await executeRecaptcha("register_form");
-                  console.log("reCAPTCHA Token:", token);
-                  const resultAction = await dispatch(register(values));
+                  setFieldValue("captcha", token);
+                  let body = { ...values, captcha: token };
+                  const resultAction = await dispatch(register(body));
+                  console.log("🚀 ~ file: Register.tsx:70 ~ onSubmit={ ~ resultAction:", resultAction)
                   if (register.fulfilled.match(resultAction)) {
-                    navigate("/verify-data", { state: { formData: values } });
+                    navigate("/user", {
+                      state: {
+                        formData: values,
+                        userId: resultAction.payload._id,
+                      },
+                    });
                   }
                 } catch (error: unknown) {
                   console.log(error, "Error during signup");

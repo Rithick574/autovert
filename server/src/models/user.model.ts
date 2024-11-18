@@ -4,21 +4,25 @@ import { IUser } from "@/types/user.type";
 
 const userSchema = new Schema<IUser>(
   {
-    name: { type: String, required: true },
+    firstname: { type: String, required: true },
+    lastname: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ["admin", "user"], default: "user" },
     isActive: { type: Boolean, default: true },
     lastPasswordChanged: { type: Date, required: true, default: Date.now },
-    version: { type: Number, ref: "Versions" },
     onboardingData: [
       {
         workflowId: { type: Schema.Types.ObjectId, ref: "Workflow" },
-        stepId: { type: Schema.Types.ObjectId, ref: "Workflow.steps" },
-        fields: [
+        steps: [
           {
-            fieldId: { type: Schema.Types.ObjectId, ref: "Field" },
-            value: { type: Schema.Types.Mixed },
+            stepName: { type: String },
+            fields: [
+              {
+                fieldName: { type: String },
+                value: { type: Schema.Types.Mixed },
+              },
+            ],
           },
         ],
       },

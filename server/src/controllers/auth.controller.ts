@@ -137,48 +137,56 @@ export const getUser = async (
   }
 };
 
-export const saveOnboardingData = async (
+
+export const registerUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const userId = req.user?._id;
-    const { workflowId, stepId, fields } = req.body;
+    const { firstname,lastname, email, password, captcha } = req.body;
+    const url = `https://www.google.com/recaptcha/api/siteverify?secret=${config.secrets.recaptcha_secret}&response=${captcha}`;
+    const response = await axios.post(url);
 
-    if (!workflowId || !stepId || !fields || !Array.isArray(fields)) {
-      return next(
-        ErrorResponse.badRequest(
-          "Invalid request. Ensure workflowId, stepId, and fields are provided."
-        )
-      );
+    if (!response.data.success) {
+      return next(ErrorResponse.badRequest("reCAPTCHA verification failed"));
     }
-    const user = await userModel.findById(userId);
-    if (!user) return next(ErrorResponse.notFound("User not found"));
-
-    const existingStepIndex = user.onboardingData?.findIndex(
-      (step) => step.stepId.toString() === stepId
-    );
-    if (
-      existingStepIndex !== undefined &&
-      existingStepIndex !== -1 &&
-      user.onboardingData
-    ) {
-      user.onboardingData[existingStepIndex].fields = fields;
-    } else {
-      const newStep = {
-        workflowId,
-        stepId,
-        fields,
-      };
-      user.onboardingData = [...(user.onboardingData || []), newStep];
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return next(ErrorResponse.conflict("User already exists"));
     }
-    await user.save();
+    const newUser = new userModel({ firstname,lastname, email, password });
+    await newUser.save();
 
-    res.status(200).json({
+    const userData = newUser.toObject();
+    delete userData.password;
+    const accessToken = generateAccessToken({
+      _id: newUser.id,
+      email: newUser.email,
+      role: newUser.role,
+    });
+
+    const refreshToken = generateRefreshToken({
+      _id: newUser.id,
+      email: newUser.email,
+      role: newUser.role,
+    });
+
+    res.cookie("access_token", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+    });
+
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+    });
+    res.status(201).json({
       success: true,
-      message: "Onboarding data saved successfully",
-      data: user.onboardingData,
+      message: "User registered successfully",
+      data: userData,
     });
   } catch (error) {
     next(error);

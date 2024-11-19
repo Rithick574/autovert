@@ -7,6 +7,7 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import mongoSanitize from "express-mongo-sanitize";
 import morgan from "morgan";
+import {startCronJobs} from "./__lib/utils/cron";
 import { notFound, errorHandler } from "@/middlewares";
 import {
   authRoutes,
@@ -48,10 +49,12 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/workflows", workflowRoutes);
 app.use("/api/v1/templates", templateRoutes);
 app.use("/api/v1/fields", fieldRoutes);
-app.use("/api/v1/onboarding",onboardingRoutes)
+app.use("/api/v1/onboarding",onboardingRoutes);
 
 //error handling middlewares
 app.use(notFound);
 app.use(errorHandler);
+
+startCronJobs();
 
 export default app;

@@ -1,11 +1,24 @@
 import { useEffect, useState } from "react";
 import NavbarAdmin from "../../components/sidebar/sidebarAdmin";
 import AdminNavbar from "../../components/navbars/AdminNavbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const location = useLocation();
+  const pageTitles: Record<string, string> = {
+    "/admin": "Dashboard",
+    "/admin/workflow": "Workflow",
+    "/admin/template": "Template",
+    "/admin/applications": "Applications",
+    "/admin/settings": "Settings",
+  };
+  const currentPath = location.pathname;
+  const categoryName =
+    pageTitles[
+      Object.keys(pageTitles).find((path) => currentPath.startsWith(path)) || ""
+    ] || "Dashboard";
   useEffect(() => {
     const handleResize = () => {
       const smallScreen = window.innerWidth <= 1280;
@@ -41,7 +54,7 @@ const Layout = () => {
             >
               <AdminNavbar
                 toggleSidebar={toggleSidebar}
-                categoryName={"Dashboard"}
+                categoryName={categoryName}
               />
             </div>
             <Outlet />

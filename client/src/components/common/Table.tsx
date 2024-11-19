@@ -49,11 +49,6 @@ const Table = <T extends {}>({
                       <td key={colIndex} className="py-2 px-4 dark:text-neutral-300 text-center">
                         {(row[col.accessor] ?? "-") as React.ReactNode}
                       </td>
-                      // {typeof row[col.accessor] === 'string' && 
-                      //   row[col.accessor].match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)
-                      //   ? formatDate(row[col.accessor] as string) 
-                      //   : (row[col.accessor] ?? "-") as React.ReactNode 
-                      // }
                     ))}
                     {renderActions && (
                       <td className="py-2 px-4 text-syncworks-blue text-center cursor-pointer">

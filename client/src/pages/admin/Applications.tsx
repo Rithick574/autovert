@@ -3,20 +3,24 @@ import Table from "../../components/common/Table";
 import { Helmet } from "react-helmet";
 import { commonRequest } from "../../common/api";
 import { config } from "../../common/configurations";
-import CreateTemplate from "../../components/admin/template/CreateTemplate";
 import Loading from "../../components/common/Loading";
+import { GrOverview } from "react-icons/gr";
+import { FcAcceptDatabase } from "react-icons/fc";
+import { MdAutoDelete } from "react-icons/md";
+import UserDetailModal from "../../components/admin/Applications/UserDetailModal";
 
 const Applications: React.FC = () => {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isUserModalVisible, setIsUserModalVisible] = useState(false);
 
   const fetchTemplates = async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await commonRequest("GET", "/templates", null, config);
+      const response = await commonRequest("GET", "/auth/applications", config);
       setTemplates(response.data);
     } catch (err) {
       setError("Failed to fetch templates");
@@ -30,26 +34,45 @@ const Applications: React.FC = () => {
     fetchTemplates();
   }, []);
 
-  //   const handleCreateTemplate = () => {
-  //     setShowModal(true);
-  //   };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   const columns = [
-    { label: "Name", accessor: "title" },
-    { label: "Status", accessor: "createdAt" },
-    { label: "Date", accessor: "version" },
-    { label: "Last Modified", accessor: "updatedAt" }
+    { label: "Name", accessor: "firstname" },
+    { label: "Email", accessor: "email" },
+    { label: "Date", accessor: "createdAt" },
   ];
 
-  const renderActions = () => (
-    <>
-      <span className="cursor-pointer text-blue-500">View</span>
-      <span className="ml-2 cursor-pointer text-red-500">Delete</span>
-    </>
+  const handleViewUser = async (userId: string) => {
+    setLoading(true);
+    try {
+      const response = await commonRequest(
+        "GET",
+        `/auth/applications/${userId}`,
+        config
+      );
+      setSelectedUser(response.data);
+      setIsUserModalVisible(true);
+    } catch (err) {
+      setError("Failed to fetch user details");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderActions = (row: any) => (
+    <div className="flex justify-center text-lg">
+      <span
+        className="cursor-pointer text-blue-500"
+        onClick={() => handleViewUser(row._id)}
+      >
+        <GrOverview />
+      </span>
+      <span className="ml-2 cursor-pointer text-blue-500">
+        <FcAcceptDatabase />
+      </span>
+      <span className="ml-2 cursor-pointer text-red-500">
+        <MdAutoDelete />
+      </span>
+    </div>
   );
 
   return (
@@ -67,14 +90,6 @@ const Applications: React.FC = () => {
               </span>
             </h2>
           </div>
-          {/* <div className="flex justify-end w-full md:w-[80%] mt-4 mb-4">
-            <button
-              className="bg-syncworks-blue text-white rounded-lg px-2 py-2 mr-3"
-              onClick={handleCreateTemplate}
-            >
-              Create Template
-            </button>
-          </div> */}
 
           {loading ? (
             <p>
@@ -93,10 +108,10 @@ const Applications: React.FC = () => {
           )}
         </div>
       </div>
-      {showModal && (
-        <CreateTemplate
-          onClose={handleCloseModal}
-          onTemplateCreated={fetchTemplates}
+      {isUserModalVisible && selectedUser && (
+        <UserDetailModal
+          user={selectedUser}
+          onClose={() => setIsUserModalVisible(false)}
         />
       )}
     </>

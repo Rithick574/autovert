@@ -5,7 +5,9 @@ import {
   registerAdmin,
   getUser,
   logout,
-  registerUser
+  registerUser,
+  getUserApplications,
+  getUserById
 } from "../controllers/auth.controller";
 import { protect, validateBody } from "@/middlewares";
 
@@ -18,6 +20,8 @@ router
 .get(protect, getUser);
 router.route("/register").post(registerUser);
 router.post("/register-admin", registerAdmin);
+router.get("/applications",getUserApplications);
+router.get("/applications/:userId",getUserById);
 
 
 export { router as authRoutes };

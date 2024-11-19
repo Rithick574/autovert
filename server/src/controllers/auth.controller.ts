@@ -137,14 +137,13 @@ export const getUser = async (
   }
 };
 
-
 export const registerUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { firstname,lastname, email, password, captcha } = req.body;
+    const { firstname, lastname, email, password, captcha } = req.body;
     const url = `https://www.google.com/recaptcha/api/siteverify?secret=${config.secrets.recaptcha_secret}&response=${captcha}`;
     const response = await axios.post(url);
 
@@ -155,7 +154,7 @@ export const registerUser = async (
     if (existingUser) {
       return next(ErrorResponse.conflict("User already exists"));
     }
-    const newUser = new userModel({ firstname,lastname, email, password });
+    const newUser = new userModel({ firstname, lastname, email, password });
     await newUser.save();
 
     const userData = newUser.toObject();
@@ -188,6 +187,45 @@ export const registerUser = async (
       message: "User registered successfully",
       data: userData,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserApplications = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const users = await userModel
+      .find({ "onboardingData.0": { $exists: true } })
+      .select("firstname email createdAt")
+      .sort({ createdAt: -1 })
+      .lean();
+    res
+      .status(200)
+      .json({ success: true, data: users, message: "user Applications" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { userId } = req.params;
+    const user = await userModel
+      .findById(userId)
+      .select("-password -role -lastPasswordChanged")
+      .lean();
+    if (!user) {
+      return next(ErrorResponse.notFound("User not found"));
+    }
+    res.status(200).json({ success: true, data: user });
   } catch (error) {
     next(error);
   }

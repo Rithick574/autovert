@@ -95,14 +95,14 @@ export const logout = async (
       maxAge: 1,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     res.cookie("refresh_token", "", {
       maxAge: 1,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
     });
 
     res.status(200).json({ message: "Logout successful" });

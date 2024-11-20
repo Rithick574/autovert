@@ -22,13 +22,10 @@ export const createTemplate = async (
         ErrorResponse.notFound("Step not found in the specified workflow")
       );
     }
-    const latestTemplate = await templateModel
-      .findOne({ stepId })
-      .sort({ version: -1 });
-    const newVersion = latestTemplate ? latestTemplate.version + 1 : 1;
-    const originalId = latestTemplate
-      ? latestTemplate.originalId || latestTemplate._id
-      : null;
+    const latestWorkflow = await workflowModel
+    .findById(workflowId)
+    .sort({ version: -1 });
+    const newVersion = latestWorkflow?.version
 
     const newTemplate = new templateModel({
       title,
@@ -36,7 +33,6 @@ export const createTemplate = async (
       stepId,
       fields,
       version: newVersion,
-      originalId,
     });
 
     await newTemplate.save();
@@ -47,6 +43,7 @@ export const createTemplate = async (
       message: "Template created successfully",
     });
   } catch (error) {
+    console.log("🚀 ~ file: template.controller.ts:47 ~ error:", error)
     next(error);
   }
 };

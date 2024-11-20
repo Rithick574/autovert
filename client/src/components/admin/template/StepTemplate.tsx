@@ -127,6 +127,7 @@ const StepTemplate: React.FC = () => {
             editingField,
             config
           );
+          console.log("🚀 ~ file: StepTemplate.tsx:125 ~ handleSubmit ~ response:", response)
           if (response.success) {
             toast.success("Field updated successfully");
             setFields((prevFields) =>
@@ -135,7 +136,7 @@ const StepTemplate: React.FC = () => {
               )
             );
           } else {
-            toast.error("Failed to update field");
+            toast.error("No new fields to add");
           }
         }
       } catch (error) {

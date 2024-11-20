@@ -45,6 +45,7 @@ const Success: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      dispatch(logout);
       removeLocalStorageItem("workflowID");
       removeLocalStorageItem("userId");
       exitfromHere();
@@ -53,7 +54,6 @@ const Success: React.FC = () => {
   }, []);
 
   const exitfromHere = () => {
-    dispatch(logout);
     navigate("/login");
   };
 

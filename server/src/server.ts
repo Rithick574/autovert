@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import { config } from "@/__boot/config";
-import { limiter } from "@/__lib/http/rateLimit";
+// import { limiter } from "@/__lib/http/rateLimit";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
@@ -26,7 +26,7 @@ app.use(helmet());
 app.use(mongoSanitize());
 
 //Rate limiting
-app.use(limiter);
+// app.use(limiter);
 
 // CORS setup
 const corsOptions = {

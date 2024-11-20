@@ -1,4 +1,4 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import { ITemplate } from "@/types/template.types";
 
 const templateSchema = new Schema<ITemplate>(
@@ -11,7 +11,6 @@ const templateSchema = new Schema<ITemplate>(
     },
     stepId: { type: Schema.Types.ObjectId, required: true },
     fields: [{ type: Schema.Types.ObjectId, ref: "Field", required: true }],
-    originalId: { type: Types.ObjectId, ref: "Template" },
     version: { type: Number, required: true, default: 1 },
   },
   { timestamps: true }

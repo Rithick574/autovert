@@ -19,11 +19,7 @@ export const createWorkflow = async (
     if (latestWorkflow) {
       const previousVersion = latestWorkflow.version;
 
-      if (previousVersion !== 1) {
-        const previousTemplate = await templateModel.findOne({
-          version: previousVersion,
-        });
-
+      const previousTemplate = await templateModel.findOne({ version: previousVersion });
         if (!previousTemplate) {
           return next(
             ErrorResponse.badRequest(
@@ -31,13 +27,10 @@ export const createWorkflow = async (
             )
           );
         }
-      }
     }
 
-    let newVersion = 1;
-    if (latestWorkflow) {
-      newVersion = latestWorkflow.version + 1;
-    }
+    const newVersion = latestWorkflow ? latestWorkflow.version + 1 : 1;
+    
     const newWorkflow = new workflowModel({
       name: "User_Onboarding_Workflow",
       description,

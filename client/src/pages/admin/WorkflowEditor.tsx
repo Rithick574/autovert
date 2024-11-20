@@ -78,15 +78,22 @@ const WorkflowEditor = () => {
         workflowData,
         config
       );
+      console.log("🚀 ~ file: WorkflowEditor.tsx:81 ~ saveWorkflow ~ response:", response)
 
-      if (!response.response.data.success) {
+      if (!response.success) {
         toast.error(response.response.data.message);
         return;
-      }
-      toast.success("Workflow created successfully!");
-      setSteps(response.data.steps);
+    }
+    toast.success("Workflow created successfully!");
+    setSteps(response.data.steps);
     } catch (error: any) {
-      alert(error.message);
+      console.log("🚀 ~ saveWorkflow ~ error:", error);
+    if (error.response) {
+        console.log("Error details:", error.response);
+        alert(error.response.data?.message || "An error occurred");
+    } else {
+        alert(error.message);
+    }
     }
   };
 
